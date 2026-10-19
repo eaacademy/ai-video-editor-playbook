@@ -1,0 +1,961 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Build Your Own AI Video Editor: Hana Marigmen's step-by-step beginner playbook for setting up an AI-assisted video editor with Claude Code. No coding required.">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Build Your Own AI Video Editor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a playbook you work through — sticky chapter rail on the left, long-form chapters on the right, prompts as copyable "terminal cards", progress saved per reader */
+:root{
+  --bg:#FFFFFF;
+  --surface:#FAF6F0;
+  --line:#E9DDCF;
+  --fg:#2A1418;
+  --muted:#6B5458;
+  --wine:#5B1A2E;
+  --wine-deep:#3A0E1C;
+  --gold:#C6A15B;
+  --gold-ink:#8A6A2E;
+  --on-wine:#FFFFFF;
+  --on-wine-soft:#EDE3D6;
+  --code-bg:#2A0B15;
+  --code-fg:#F3E9DC;
+  --ok:#2F6B46;
+  --display:'DM Serif Display',Georgia,'Times New Roman',serif;
+  --body:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+/* single light look by design: white page, burgundy + gold accents only */
+:root{color-scheme:light}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{background:var(--bg);color:var(--fg);font:400 17px/1.7 var(--body)}
+a{color:var(--gold-ink);text-underline-offset:3px}
+a:hover{color:var(--wine)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+.pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* ---------- HERO ---------- */
+.hero{background:var(--bg);color:var(--fg);position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.hero h1{color:var(--wine)}
+.hero h1 em{color:var(--gold-ink)!important}
+.hero .sub,.hero .by{color:var(--muted)!important}
+.hero .by strong{color:var(--fg)!important}
+.hero .eyebrow{color:var(--gold-ink)}
+.btn-ghost{color:var(--wine)!important;box-shadow:inset 0 0 0 1.5px var(--line)!important}
+.btn-ghost:hover{box-shadow:inset 0 0 0 1.5px var(--gold)!important}
+.hero-in{max-width:1180px;margin:0 auto;padding-block:72px 64px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:56px;align-items:center}
+.eyebrow{font:800 12px/1.3 var(--body);letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.hero h1{font:400 clamp(44px,6.6vw,86px)/.98 var(--display);margin:18px 0 0;text-wrap:balance;letter-spacing:-.01em}
+.hero h1 em{color:var(--gold);font-style:italic}
+.hero .sub{font:500 clamp(18px,2vw,22px)/1.5 var(--body);color:var(--on-wine-soft);margin:22px 0 0;max-width:34ch}
+.hero .by{margin-top:28px;display:flex;flex-wrap:wrap;gap:10px 22px;font-size:14px;color:var(--on-wine-soft)}
+.hero .by strong{color:var(--on-wine);font-weight:700}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:50px;padding:0 24px;border-radius:999px;font:800 14px/1 var(--body);letter-spacing:.06em;text-decoration:none;border:0;cursor:pointer}
+.btn-gold{background:var(--gold);color:#2A0B15}
+.btn-gold:hover{color:#2A0B15;filter:brightness(1.07)}
+.btn-ghost{color:var(--on-wine);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35)}
+.btn-ghost:hover{color:var(--on-wine);box-shadow:inset 0 0 0 1.5px var(--gold)}
+
+/* timeline "editor" panel in hero */
+.editor{background:#1E070E;border:1px solid #5B2A38;border-radius:18px;padding:18px;font:500 12px/1.4 var(--mono);color:#E9D9CC}
+.editor .bar{display:flex;gap:6px;margin-bottom:14px}
+.editor .bar i{width:10px;height:10px;border-radius:50%;background:#5B2A38}
+.editor .bar i:first-child{background:var(--gold)}
+.ed-prompt{background:#2A0B15;border-radius:10px;padding:12px 14px;color:#F3E9DC}
+.ed-prompt b{color:var(--gold);font-weight:600}
+.tracks{margin-top:16px;display:grid;gap:8px}
+.track{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:center}
+.track span{color:#B79A92;font-size:11px}
+.clips{display:flex;gap:4px;height:22px}
+.clip{border-radius:4px;background:#7A2A40}
+.clip.cut{background:transparent;border:1px dashed #6B3A48}
+.clip.cap{background:var(--gold);opacity:.85}
+.clip.aud{background:#4A1A28}
+.ed-status{margin-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:#B79A92}
+.ed-status b{color:#9FD7B0;font-weight:600}
+.playhead{position:relative}
+@keyframes sweep{from{left:0}to{left:100%}}
+.playhead::after{content:"";position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--gold);left:30%;animation:sweep 6s linear infinite}
+
+/* facts strip */
+.facts{background:var(--surface);color:var(--fg);border-bottom:1px solid var(--line)}
+.facts .fact b{color:var(--wine)!important}
+.facts .fact span{color:var(--muted)!important}
+.facts-in{max-width:1180px;margin:0 auto;padding-block:22px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.fact b{display:block;font:400 30px/1 var(--display);color:var(--gold)}
+.fact span{font-size:13px;color:var(--on-wine-soft)}
+
+/* ---------- SHELL ---------- */
+.shell{max-width:1180px;margin:0 auto;padding-block:56px 96px;display:grid;grid-template-columns:260px minmax(0,1fr);gap:56px;align-items:start}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);max-height:calc(100vh - 48px);overflow:auto;padding-right:6px}
+.progress{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:22px}
+.progress .lbl{display:flex;justify-content:space-between;font:700 12px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.progress .lbl b{color:var(--fg);font-variant-numeric:tabular-nums}
+.meter{height:8px;border-radius:99px;background:var(--line);margin-top:12px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--gold);border-radius:99px;transition:width .4s}
+.progress small{display:block;margin-top:10px;font-size:12px;color:var(--muted);line-height:1.4}
+.phase-name{font:800 11px/1 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--gold-ink);margin:20px 0 8px}
+.rail ol{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.rail a{display:grid;grid-template-columns:26px minmax(0,1fr);gap:6px;padding:7px 10px;border-radius:8px;color:var(--muted);text-decoration:none;font-size:14px;line-height:1.35}
+.rail a span{font:600 12px/1.6 var(--mono);color:var(--gold-ink)}
+.rail a:hover{background:var(--surface);color:var(--fg)}
+.rail a.on{background:var(--wine);color:var(--on-wine)}
+.rail a.on span{color:var(--gold)}
+.mobile-nav{display:none}
+
+/* ---------- CONTENT ---------- */
+main{min-width:0}
+.phase{display:flex;align-items:center;gap:16px;margin:72px 0 8px}
+.phase:first-child{margin-top:0}
+.phase .tag{font:800 12px/1 var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--gold-ink);white-space:nowrap}
+.phase hr{flex:1;border:0;border-top:1px solid var(--line);margin:0}
+.chapter{padding-top:40px;scroll-margin-top:24px}
+.ch-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:end;margin-bottom:22px}
+.ch-num{font:400 clamp(56px,7vw,84px)/.8 var(--display);color:var(--gold)}
+.ch-head .k{font:800 12px/1 var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.ch-head h2{font:400 clamp(30px,3.6vw,44px)/1.08 var(--display);margin:8px 0 0;color:var(--wine);text-wrap:balance}
+:root[data-theme="dark"] .ch-head h2{color:var(--fg)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ch-head h2{color:var(--fg)}}
+.chapter p{margin:0 0 16px;max-width:66ch}
+.chapter h3{font:800 15px/1.3 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--fg);margin:34px 0 12px}
+.chapter ul,.chapter ol.steps{margin:0 0 18px;padding-left:22px;max-width:66ch}
+.chapter li{margin-bottom:6px}
+.lead{font-size:20px;line-height:1.6;color:var(--fg)}
+code{font:500 .86em var(--mono);background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+
+/* letter */
+.letter{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(22px,4vw,40px)}
+.letter p{font-size:18px}
+.sign{font:italic 400 28px/1 var(--display);color:var(--wine);margin-top:8px}
+:root[data-theme="dark"] .sign{color:var(--gold)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sign{color:var(--gold)}}
+
+/* goals grid */
+.goals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:8px 0 6px;padding:0;list-style:none}
+.goals li{margin:0;border-top:2px solid var(--gold);padding-top:10px;font-size:15px;line-height:1.45}
+.goals li b{display:block;font:600 12px/1.4 var(--mono);color:var(--gold-ink);margin-bottom:4px}
+
+/* tables */
+.tbl{overflow-x:auto;margin:6px 0 22px;border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.45}
+th{background:var(--surface);text-align:left;font:800 12px/1.3 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:12px 16px;border-bottom:1px solid var(--line)}
+td{padding:12px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:700}
+.vs td:first-child{font-weight:400;color:var(--muted)}
+.vs td:last-child{font-weight:600}
+
+/* tool cards */
+.tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:8px 0 26px}
+.tool{border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:var(--bg)}
+.tool b{display:block;font:400 22px/1.2 var(--display);color:var(--wine)}
+:root[data-theme="dark"] .tool b{color:var(--gold)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tool b{color:var(--gold)}}
+.tool small{display:block;font:700 11px/1.3 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink);margin-top:6px}
+.tool p{font-size:14px;line-height:1.5;margin:8px 0 0;color:var(--muted)}
+.tool-block{border-left:0;border-top:1px solid var(--line);padding-top:6px;margin-top:30px}
+.tool-block h3{display:flex;align-items:baseline;gap:12px}
+.tool-block h3 em{font:400 italic 15px var(--display);color:var(--gold-ink);text-transform:none;letter-spacing:0}
+
+/* prompt cards */
+.prompt{background:var(--surface);color:var(--fg);border-radius:16px;margin:10px 0 22px;overflow:hidden;border:1px solid var(--line);border-left:4px solid var(--gold)}
+.prompt-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px 12px 18px;border-bottom:1px solid var(--line);background:var(--bg);flex-wrap:wrap}
+.prompt-top .pn{font:600 12px/1.3 var(--mono);color:var(--gold-ink);letter-spacing:.06em}
+.prompt-top .pt{font:700 13px/1.3 var(--body);color:var(--wine);letter-spacing:.04em}
+.copy{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 14px;border-radius:999px;border:0;background:var(--wine);color:var(--on-wine);font:700 12px/1 var(--body);letter-spacing:.08em;cursor:pointer}
+.copy:hover{background:var(--wine-deep)}
+.copy.done{background:var(--ok);color:#FFFFFF}
+.prompt pre{margin:0;padding:16px 18px 18px;overflow-x:auto;font:400 13.5px/1.65 var(--mono);white-space:pre-wrap;word-break:break-word}
+
+/* callouts */
+.note{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:8px 0 22px;font-size:15px;line-height:1.55}
+.note svg{margin-top:2px}
+.note p{margin:0}
+.warn{background:#FBF1F3;color:var(--wine);border-color:#EBCBD2}
+.warn a{color:var(--wine)}
+
+/* checklist */
+.check{list-style:none;padding:0!important;margin:6px 0 22px!important;display:grid;gap:8px;max-width:66ch}
+.check li{margin:0}
+.check label{display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px;align-items:start;padding:12px 14px;border:1px solid var(--line);border-radius:12px;cursor:pointer;font-size:15px;line-height:1.45;background:var(--bg);transition:background .2s,border-color .2s}
+.check input{appearance:none;width:22px;height:22px;margin:0;border:2px solid var(--gold);border-radius:6px;display:grid;place-content:center;cursor:pointer;background:var(--bg)}
+.check input::after{content:"";width:11px;height:6px;border-left:2.5px solid #2A0B15;border-bottom:2.5px solid #2A0B15;transform:rotate(-45deg) translate(1px,-1px);opacity:0}
+.check input:checked{background:var(--gold)}
+.check input:checked::after{opacity:1}
+.check label:has(input:checked){background:var(--surface)}
+.check label:has(input:checked) span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--gold)}
+.cp-label{font:800 12px/1 var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--ok);margin:28px 0 10px}
+
+/* choose-a-path */
+.paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:10px 0 18px}
+.path{border:1px solid var(--line);border-radius:16px;padding:20px;background:var(--bg)}
+.path.rec{border:2px solid var(--gold)}
+.path .badge{display:inline-block;font:800 11px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;background:var(--gold);color:#2A0B15;padding:6px 10px;border-radius:99px;margin-bottom:10px}
+.path h4{font:400 26px/1.1 var(--display);margin:0 0 12px;color:var(--fg)}
+.path dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;margin:0;font-size:14px;line-height:1.45}
+.path dt{color:var(--muted)}
+.path dd{margin:0;font-weight:600}
+
+/* folders */
+.folders{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:8px 0 24px}
+.folder{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--surface)}
+.folder code{background:transparent;border:0;padding:0;font-size:13px;font-weight:600;color:var(--wine)}
+:root[data-theme="dark"] .folder code{color:var(--gold)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .folder code{color:var(--gold)}}
+.folder p{font-size:13px;line-height:1.45;margin:6px 0 0;color:var(--muted)}
+
+/* say-it chips */
+.says{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 18px}
+.says span{background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:8px 14px;font-size:14px}
+
+/* library */
+.lib{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:8px 0 18px}
+.lib a{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:12px 14px;text-decoration:none;color:var(--fg);font-size:14px;line-height:1.35;background:var(--bg)}
+.lib a b{font:600 13px/1 var(--mono);color:var(--gold-ink)}
+.lib a small{display:block;color:var(--muted);font-size:12px}
+.lib a:hover{border-color:var(--gold);background:var(--surface)}
+
+/* finale */
+.finale{background:var(--surface);color:var(--fg);border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:24px;padding:clamp(28px,5vw,56px);margin-top:40px;text-align:center}
+.finale .eyebrow{color:var(--gold-ink)}
+.finale h2{font:400 clamp(36px,5vw,60px)/1.05 var(--display);margin:12px 0 18px;color:var(--wine);text-wrap:balance}
+.finale p{color:var(--muted);max-width:54ch;margin:0 auto 14px}
+.finale .mantra{font:italic 400 clamp(22px,2.6vw,30px)/1.3 var(--display);color:var(--gold-ink);margin:26px 0 8px}
+.finale .sign{color:var(--wine)}
+
+footer{border-top:1px solid var(--line)}
+footer .in{max-width:1180px;margin:0 auto;padding-block:28px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted)}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:980px){
+  .hero-in{grid-template-columns:1fr;gap:36px;padding-block:52px 48px}
+  .shell{grid-template-columns:1fr;gap:0;padding-block:24px 72px}
+  .rail{display:none}
+  .mobile-nav{display:block;position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--bg)}
+  .mobile-nav .in{display:flex;gap:12px;align-items:center;padding-block:10px}
+  .mobile-nav select{flex:1;min-width:0;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:600 14px var(--body);padding:0 12px}
+  .mobile-nav .mini{font:700 13px/1 var(--mono);color:var(--gold-ink);white-space:nowrap}
+  .tools,.lib{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .folders{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .goals{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:620px){
+  body{font-size:16px}
+  .facts-in{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tools,.lib,.paths,.folders{grid-template-columns:1fr}
+  .goals{grid-template-columns:1fr}
+  .ch-head{grid-template-columns:1fr;gap:6px}
+  .lead{font-size:18px}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-in pad">
+    <div>
+      <div class="eyebrow">The complete beginner's playbook</div>
+      <h1>Build your own <em>AI video editor</em></h1>
+      <p class="sub">From zero to your first AI-edited video. No coding experience required.</p>
+      <div class="by"><span>Created by <strong>Hana Marigmen</strong></span><span>19 chapters</span><span>15 copy-and-paste prompts</span></div>
+      <div class="cta-row">
+        <a class="btn btn-gold" href="#ch1">Start the playbook →</a>
+        <a class="btn btn-ghost" href="#ch17">Jump to the prompts</a>
+      </div>
+    </div>
+    <div class="editor" aria-label="Illustration of an AI editing session">
+      <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="ed-prompt"><b>&gt;</b> Turn this into an Instagram Reel. Remove the pauses, add captions, keep it natural.</div>
+      <div class="tracks" aria-hidden="true">
+        <div class="track"><span>VIDEO</span><div class="clips playhead"><div class="clip" style="flex:3"></div><div class="clip cut" style="flex:1"></div><div class="clip" style="flex:4"></div><div class="clip cut" style="flex:.7"></div><div class="clip" style="flex:3"></div></div></div>
+        <div class="track"><span>CAPS</span><div class="clips"><div class="clip cap" style="flex:2"></div><div class="clip cut" style="flex:.4;border-color:transparent"></div><div class="clip cap" style="flex:3"></div><div class="clip cut" style="flex:.4;border-color:transparent"></div><div class="clip cap" style="flex:2.5"></div></div></div>
+        <div class="track"><span>AUDIO</span><div class="clips"><div class="clip aud" style="flex:1"></div></div></div>
+      </div>
+      <div class="ed-status"><span>reel_final.mp4 · 9:16</span><b>● exported to outbox/</b></div>
+    </div>
+  </div>
+</header>
+
+<section class="facts" aria-label="At a glance">
+  <div class="facts-in pad">
+    <div class="fact"><b>0</b><span>lines of code to write</span></div>
+    <div class="fact"><b>30–90</b><span>minutes for first-time setup</span></div>
+    <div class="fact"><b>15</b><span>ready-to-paste prompts</span></div>
+    <div class="fact"><b>MP4</b><span>your first edited video</span></div>
+  </div>
+</section>
+
+<nav class="mobile-nav" aria-label="Chapters">
+  <div class="in pad">
+    <label for="chapter-jump" class="sr" style="position:absolute;left:-9999px">Jump to chapter</label>
+    <select id="chapter-jump"></select>
+    <span class="mini" id="mini-progress">0%</span>
+  </div>
+</nav>
+
+<div class="shell pad">
+  <aside class="rail" aria-label="Chapters">
+    <div class="progress">
+      <div class="lbl"><span>Your progress</span><b id="prog-num">0 / 0</b></div>
+      <div class="meter"><i id="prog-bar"></i></div>
+      <small>Tick the checkpoints as you go. Your progress is saved in this browser.</small>
+    </div>
+    <div id="rail-list"></div>
+  </aside>
+
+  <main>
+
+  <!-- ===================== PART 1 ===================== -->
+  <div class="phase" data-phase="Start here"><span class="tag">Part 1 · Start here</span><hr></div>
+
+  <section class="chapter" id="ch1" data-title="Welcome">
+    <div class="ch-head"><div class="ch-num">01</div><div><div class="k">Chapter 1</div><h2>Welcome</h2></div></div>
+    <div class="letter">
+      <p class="lead">Hi! I'm Hana. I'm a business owner, not a programmer.</p>
+      <p>Like many business owners, I'm always juggling responsibilities and looking for practical ways to make running a business simpler. That's what led me to experiment with Claude Code.</p>
+      <p>I discovered I could build my own AI-assisted video editing workflow without knowing how to code. I could give AI instructions, set my editing preferences, and use them to turn raw footage into edited videos.</p>
+      <p>This playbook assumes you're starting from absolutely zero. You don't need to know what Git, Node.js, FFmpeg, Python or an API key is. You don't even need Claude installed yet. We'll start with the basics and work our way to your first edited video.</p>
+      <div class="sign">— Hana Marigmen</div>
+    </div>
+    <h3>By the end of this playbook, you will</h3>
+    <ol class="goals">
+      <li><b>01</b>Understand the tools behind AI-assisted editing</li>
+      <li><b>02</b>Install Claude Code</li>
+      <li><b>03</b>Prepare your computer</li>
+      <li><b>04</b>Download and set up an AI video editor</li>
+      <li><b>05</b>Set up transcription</li>
+      <li><b>06</b>Edit your first video</li>
+      <li><b>07</b>Save your own editing style</li>
+      <li><b>08</b>Export and review your finished video</li>
+    </ol>
+  </section>
+
+  <section class="chapter" id="ch2" data-title="What we're building">
+    <div class="ch-head"><div class="ch-num">02</div><div><div class="k">Chapter 2</div><h2>What exactly are we building?</h2></div></div>
+    <p>An AI-assisted video editing workflow, powered by Claude Code and an open-source editing project. Instead of doing every editing task by hand, you describe what you want in everyday language, and Claude uses the editing tools on your computer to do it.</p>
+    <div class="tbl"><table class="vs">
+      <thead><tr><th>Traditional editing</th><th>AI-assisted editing</th></tr></thead>
+      <tbody>
+        <tr><td>Manually cut clips</td><td>Ask AI to find and remove pauses</td></tr>
+        <tr><td>Manually create captions</td><td>Transcription generates captions for you</td></tr>
+        <tr><td>Adjust each edit yourself</td><td>Describe your preferred editing style</td></tr>
+        <tr><td>Repeat the same tasks every time</td><td>Reuse prompts and saved settings</td></tr>
+        <tr><td>Learn complex editing software</td><td>Give instructions through Claude Code</td></tr>
+      </tbody>
+    </table></div>
+    <h3>What your AI editor can help with</h3>
+    <ul>
+      <li>Removing pauses and mistakes, and cutting unneeded footage</li>
+      <li>Generating captions</li>
+      <li>Creating short-form videos and applying basic visual styles</li>
+      <li>Exporting MP4 videos and making revisions</li>
+      <li>Reusing your editing preferences on every video</li>
+    </ul>
+    <div class="note"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v5M12 16.5v.5"/></svg><p><strong>Always review before you publish.</strong> AI-assisted editing won't always be perfect. This playbook isn't meant to replace professional video editors. It's one more tool for your creative workflow.</p></div>
+  </section>
+
+  <section class="chapter" id="ch3" data-title="What you need">
+    <div class="ch-head"><div class="ch-num">03</div><div><div class="k">Chapter 3</div><h2>What you need before starting</h2></div></div>
+    <p class="cp-label">Your beginner's checklist</p>
+    <ul class="check">
+      <li><label><input type="checkbox"><span>A Mac or Windows computer</span></label></li>
+      <li><label><input type="checkbox"><span>An internet connection</span></label></li>
+      <li><label><input type="checkbox"><span>A paid Claude plan (Pro or higher) to use Claude Code</span></label></li>
+      <li><label><input type="checkbox"><span>About 1 GB of free storage, plus room for your videos</span></label></li>
+      <li><label><input type="checkbox"><span>A short test video</span></label></li>
+      <li><label><input type="checkbox"><span>30–90 minutes for setup (longer if you need to troubleshoot)</span></label></li>
+    </ul>
+    <h3>Will everything be free?</h3>
+    <p>Mostly. The supporting tools are free. Claude needs a paid plan, and transcription has a free option.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Tool</th><th>Cost</th></tr></thead>
+      <tbody>
+        <tr><td>Git, Node.js, FFmpeg, Python</td><td>Free</td></tr>
+        <tr><td>free247editor</td><td>Free (MIT license)</td></tr>
+        <tr><td>faster-whisper</td><td>Free software</td></tr>
+        <tr><td>Groq API</td><td>Free tier covers normal use</td></tr>
+        <tr><td>Claude Code</td><td>Requires a paid Claude plan; editing uses a good amount of usage</td></tr>
+      </tbody>
+    </table></div>
+    <p style="font-size:14px;color:var(--muted)">Your purchase of this playbook does not include third-party subscriptions or API credits.</p>
+  </section>
+
+  <section class="chapter" id="ch4" data-title="Meet your tools">
+    <div class="ch-head"><div class="ch-num">04</div><div><div class="k">Chapter 4</div><h2>Meet your tools</h2></div></div>
+    <p>"What is Git? What's Node.js? Why do I need FFmpeg?" Here's each one, explained simply.</p>
+    <div class="tools">
+      <div class="tool"><b>Claude Code</b><small>Your AI technical assistant</small><p>Works with files on your computer and runs commands you approve.</p></div>
+      <div class="tool"><b>Git</b><small>Your project downloader</small><p>Brings the editor from GitHub onto your computer.</p></div>
+      <div class="tool"><b>Node.js + npm</b><small>The software engine</small><p>Runs the editor's JavaScript tools and setup script.</p></div>
+      <div class="tool"><b>FFmpeg</b><small>The video engine</small><p>Cuts, combines, converts and exports video and audio.</p></div>
+      <div class="tool"><b>Python</b><small>Only for local transcription</small><p>Needed if you choose faster-whisper.</p></div>
+      <div class="tool"><b>Groq</b><small>Optional transcription</small><p>Turns the speech in your videos into text, online.</p></div>
+    </div>
+
+    <div class="tool-block">
+      <h3>Tool 1 · Claude Code <em>your AI technical assistant</em></h3>
+      <ol class="steps">
+        <li>Go to the <a href="https://claude.ai/download">official Claude download page</a> and download Claude Desktop.</li>
+        <li>Open the downloaded file and follow the installation instructions.</li>
+        <li>Open Claude Desktop and sign in (or create an account).</li>
+        <li>Open the <strong>Code</strong> section and choose your own computer as the environment.</li>
+      </ol>
+      <p>You'll know it's working when you can start a conversation in Claude Code. If Code isn't available, check your plan's access.</p>
+      <ul class="check"><li><label><input type="checkbox"><span>Claude Code is accessible</span></label></li></ul>
+    </div>
+
+    <div class="tool-block">
+      <h3>Tool 2 · Git <em>your project downloader</em></h3>
+      <p>Download it from the <a href="https://git-scm.com/downloads">official Git page</a>. On Windows, the recommended installer settings are fine. On a Mac, Git may already be installed. Then let Claude check:</p>
+      <div class="prompt" data-n="1" data-t="Check Git"><pre>Please check whether Git is installed on my computer.
+
+If installed, show me its version.
+
+If missing, explain how to install it.
+
+Do not install anything without asking me.</pre></div>
+      <ul class="check"><li><label><input type="checkbox"><span>Git is installed</span></label></li></ul>
+    </div>
+
+    <div class="tool-block">
+      <h3>Tool 3 · Node.js <em>the software engine</em></h3>
+      <p>Download the <strong>LTS</strong> version from the <a href="https://nodejs.org/en/download">official Node.js page</a>. free247editor needs <strong>version 22 or newer</strong>. npm, the tool that installs JavaScript add-ons, comes with it.</p>
+      <div class="prompt" data-n="2" data-t="Check Node.js"><pre>Please check whether Node.js and npm are installed correctly.
+
+Show me their versions.
+
+Explain whether they're compatible with my AI video editing project
+(it needs Node.js 22 or newer).</pre></div>
+      <ul class="check"><li><label><input type="checkbox"><span>Node.js 22+ and npm are installed</span></label></li></ul>
+    </div>
+
+    <div class="tool-block">
+      <h3>Tool 4 · FFmpeg <em>the video engine</em></h3>
+      <p>Downloads are on the <a href="https://ffmpeg.org/download.html">official FFmpeg page</a>, but installing it differs between Windows and Mac. Let Claude guide you:</p>
+      <div class="prompt" data-n="3" data-t="Install FFmpeg"><pre>I'm a complete beginner.
+
+Please check whether FFmpeg is installed.
+
+If it isn't:
+1. Identify my operating system.
+2. Explain the safest installation method.
+3. Use official or trusted sources.
+4. Ask for my permission before installing.
+5. Guide me through each step.
+6. Verify that FFmpeg works.
+
+Do not change unrelated files.</pre></div>
+      <ul class="check"><li><label><input type="checkbox"><span>FFmpeg is installed and working</span></label></li></ul>
+    </div>
+
+    <div class="tool-block">
+      <h3>Tool 5 · Python <em>only for local transcription</em></h3>
+      <p>Available from the <a href="https://www.python.org/downloads/">official Python page</a>. <strong>Don't install it yet.</strong> You only need it if you pick faster-whisper in Chapter 9.</p>
+    </div>
+
+    <div class="tool-block">
+      <h3>Tool 6 · Groq <em>optional transcription</em></h3>
+      <p>Groq turns the speech in your videos into text, which powers captions. It uses an <strong>API key</strong>: a private access code, like a password that lets software talk to an online service.</p>
+      <ol class="steps">
+        <li>Go to the <a href="https://console.groq.com">Groq Console</a> and create an account.</li>
+        <li>Open <strong>API Keys</strong> and click <strong>Create API Key</strong>.</li>
+        <li>Name it <code>My AI Video Editor</code>, copy it, and store it somewhere private.</li>
+      </ol>
+      <div class="note warn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><p><strong>Never share your API key</strong> publicly, in chat, or in screenshots.</p></div>
+    </div>
+  </section>
+
+  <!-- ===================== PART 2 ===================== -->
+  <div class="phase" data-phase="Set up"><span class="tag">Part 2 · Set up your computer</span><hr></div>
+
+  <section class="chapter" id="ch5" data-title="Prepare your computer">
+    <div class="ch-head"><div class="ch-num">05</div><div><div class="k">Chapter 5</div><h2>Prepare your computer</h2></div></div>
+    <ol class="steps">
+      <li><strong>Create your workspace.</strong> In your <strong>Documents</strong> folder, create a folder named <code>AI Video Editor</code>.</li>
+      <li><strong>Record a test video.</strong> 30–60 seconds on your phone or webcam. Include a few pauses or restarts on purpose.</li>
+      <li><strong>Open Claude Code in the local environment.</strong> We want the editor on your own computer, not in a temporary cloud workspace.</li>
+    </ol>
+    <div class="note"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z"/><path d="M19 11a7 7 0 0 1-14 0M12 18v3"/></svg><p><strong>Try saying:</strong> "Hi everyone! Today I'm testing my AI video editor. I want to see if it can remove unnecessary pauses, create captions, and help me turn this recording into a finished video."</p></div>
+  </section>
+
+  <section class="chapter" id="ch6" data-title="Let Claude prepare it">
+    <div class="ch-head"><div class="ch-num">06</div><div><div class="k">Chapter 6</div><h2>Let Claude prepare your computer</h2></div></div>
+    <p>You don't have to install everything by hand. Start a new Claude Code conversation and let it check what you already have.</p>
+    <div class="prompt" data-n="4" data-t="Beginner computer setup"><pre>Hi Claude! I'm a complete beginner.
+
+I want to build my own AI-assisted video editor.
+I have no coding experience. Please help me prepare my computer.
+
+STEP 1: Identify my operating system.
+
+STEP 2: Check whether these tools are installed:
+- Git
+- Node.js
+- npm
+- FFmpeg
+- Python
+- Google Chrome
+
+STEP 3: Explain what each tool does.
+
+STEP 4: Tell me which tools are missing.
+
+STEP 5: Recommend the safest installation method for each required tool.
+
+IMPORTANT:
+- Do not install anything yet.
+- Ask permission before making changes.
+- Use official or trusted sources.
+- Explain everything in simple English.
+- Guide me one step at a time.
+- Do not modify unrelated files.
+
+Wait for my approval before proceeding.</pre></div>
+    <p>Claude will report what's installed and what's missing. For example (yours may differ):</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Tool</th><th>Example result</th></tr></thead>
+      <tbody><tr><td>Git</td><td>Installed</td></tr><tr><td>Node.js / npm</td><td>Missing</td></tr><tr><td>FFmpeg</td><td>Missing</td></tr><tr><td>Python</td><td>Installed</td></tr></tbody>
+    </table></div>
+    <div class="prompt" data-n="5" data-t="Install missing tools"><pre>Thank you for checking my computer.
+
+Please help me install the missing tools required for my AI video editor.
+Install one tool at a time.
+
+For each installation:
+1. Explain why it's needed.
+2. Tell me what will be installed.
+3. Ask for my approval.
+4. Guide me through the installation.
+5. Verify that it worked.
+
+Do not install unnecessary software.
+Do not delete or modify unrelated files.
+Stop and explain if something fails.</pre></div>
+    <div class="prompt" data-n="6" data-t="Verify computer setup"><pre>Please verify my computer setup. Show me:
+
+1. Which tools are installed.
+2. Their versions.
+3. Whether any required tools are missing.
+4. Whether I'm ready to install my AI video editing project.
+
+Explain the results simply.</pre></div>
+    <p class="cp-label">Checkpoint</p>
+    <ul class="check">
+      <li><label><input type="checkbox"><span>Git works</span></label></li>
+      <li><label><input type="checkbox"><span>Node.js and npm work</span></label></li>
+      <li><label><input type="checkbox"><span>FFmpeg works</span></label></li>
+      <li><label><input type="checkbox"><span>Claude confirms you're ready to continue</span></label></li>
+    </ul>
+  </section>
+
+  <!-- ===================== PART 3 ===================== -->
+  <div class="phase" data-phase="Install"><span class="tag">Part 3 · Install the editor</span><hr></div>
+
+  <section class="chapter" id="ch7" data-title="Download the editor">
+    <div class="ch-head"><div class="ch-num">07</div><div><div class="k">Chapter 7</div><h2>Download your AI video editor</h2></div></div>
+    <p>We'll use <a href="https://github.com/riecodes/free247editor">free247editor</a>, a free, MIT-licensed, open-source editor that runs inside Claude Code. You drop in a raw video, say "edit this," and get back a cut, captioned draft. You can even give feedback in English, Tagalog or Taglish.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Requirement</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>Computer</td><td>Tested on Windows 11. macOS and Linux should work but aren't tested yet.</td></tr>
+        <tr><td>Claude plan</td><td>Paid. Pro works; Max is better if you edit often.</td></tr>
+        <tr><td>Software</td><td>Node.js 22+, Git, FFmpeg and Google Chrome</td></tr>
+        <tr><td>Storage</td><td>About 1 GB</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>New words:</strong> GitHub is a website where developers share projects. A <em>repository</em> is the project's folder of files. <em>Cloning</em> means downloading a copy to your computer.</p>
+    <div class="prompt" data-n="7" data-t="Download the editor"><pre>I want to install this AI video editor:
+https://github.com/riecodes/free247editor.git
+
+I'm a complete beginner. Please:
+
+1. Inspect the repository.
+2. Read its README and CLAUDE.md files.
+3. Explain what the project does.
+4. Check whether it supports my computer.
+5. Identify its required dependencies.
+6. Explain any compatibility or security concerns.
+7. Check the project's license and usage terms.
+8. Ask before downloading anything.
+
+If everything is suitable, help me download the repository
+into my AI Video Editor folder in Documents.
+
+Do not run installation scripts yet.
+Do not modify unrelated files.
+Guide me one step at a time.</pre></div>
+    <p>Prefer not to use Git? You can also download the ZIP from the GitHub page and unzip it into your workspace. Then ask Claude to show you the folder:</p>
+    <div class="prompt" data-n="" data-t="Find the project folder"><pre>Please show me the exact location of my downloaded AI video editor.
+Help me open the folder in Finder or File Explorer.</pre></div>
+    <div class="note"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v5M12 16.5v.5"/></svg><p>free247editor is a public GitHub project. It is not software created or owned by Hana Marigmen.</p></div>
+    <p class="cp-label">Checkpoint</p>
+    <ul class="check">
+      <li><label><input type="checkbox"><span>The <code>free247editor</code> folder is on your computer</span></label></li>
+      <li><label><input type="checkbox"><span>Claude has read the setup instructions and checked compatibility</span></label></li>
+    </ul>
+  </section>
+
+  <section class="chapter" id="ch8" data-title="Install the editor">
+    <div class="ch-head"><div class="ch-num">08</div><div><div class="k">Chapter 8</div><h2>Install your AI video editor</h2></div></div>
+    <p class="lead">In free247editor, setup starts with one word: <code>start</code>.</p>
+    <ol class="steps">
+      <li>Open Claude Code inside the <code>free247editor</code> folder.</li>
+      <li>Type <code>start</code>. Claude follows the project's <code>CLAUDE.md</code>, runs the one-time setup script (<code>node setup.mjs</code>), installs any missing tools with your approval, renders a test video and asks about your style.</li>
+      <li>Read each permission request before you approve it.</li>
+    </ol>
+    <p><strong>What does <code>node setup.mjs</code> mean?</strong> <code>node</code> runs a JavaScript program, and <code>setup.mjs</code> is the setup program. It's safe to run again. Want every step explained first? Paste this instead of <code>start</code>:</p>
+    <div class="prompt" data-n="8" data-t="Install the editor"><pre>I'm ready to install my AI video editor.
+Please read the project's official setup instructions in CLAUDE.md.
+
+Before running node setup.mjs, explain what it does.
+
+Please:
+1. Check all required dependencies.
+2. Explain any missing components.
+3. Ask permission before installing.
+4. Follow the official setup instructions.
+5. Stop if an error occurs.
+6. Explain errors in simple language.
+7. Verify whether setup completed.
+
+Do not delete unrelated files.
+Guide me one step at a time.</pre></div>
+    <div class="prompt" data-n="" data-t="Verify the install"><pre>Please verify that my AI video editor was installed successfully. Tell me:
+
+1. What was installed.
+2. Whether anything is missing.
+3. Whether there were errors.
+4. What I need to configure next.</pre></div>
+    <p class="cp-label">Checkpoint</p>
+    <ul class="check">
+      <li><label><input type="checkbox"><span>Setup completed with no unresolved errors</span></label></li>
+      <li><label><input type="checkbox"><span>The test video rendered</span></label></li>
+    </ul>
+  </section>
+
+  <section class="chapter" id="ch9" data-title="Choose transcription">
+    <div class="ch-head"><div class="ch-num">09</div><div><div class="k">Chapter 9</div><h2>Choose your transcription</h2></div></div>
+    <p>Transcription lets the editor understand what you say, which powers captions and speech-based cuts. Both options are free. Pick one.</p>
+    <div class="paths">
+      <div class="path rec"><span class="badge">Recommended</span><h4>Groq</h4><dl><dt>Runs</dt><dd>Online</dd><dt>Needs</dt><dd>A free API key</dd><dt>Internet</dt><dd>Required</dd><dt>Best for</dt><dd>Speed, and Taglish</dd></dl><p style="margin:14px 0 0;font-size:14px"><a href="#ch10">Set up Groq →</a></p></div>
+      <div class="path"><h4>faster-whisper</h4><dl><dt>Runs</dt><dd>On your computer</dd><dt>Needs</dt><dd>Python</dd><dt>Internet</dt><dd>Not after setup</dd><dt>Best for</dt><dd>Working offline</dd></dl><p style="margin:14px 0 0;font-size:14px"><a href="#ch11">Set up local transcription →</a></p></div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch10" data-title="Connect Groq">
+    <div class="ch-head"><div class="ch-num">10</div><div><div class="k">Chapter 10 · Option A</div><h2>Connect your Groq API key</h2></div></div>
+    <p>Skip this chapter if you're using local transcription. free247editor keeps your key in a private file called <code>.env</code>, made from the project's <code>.env.example</code> template. Never publish or share it.</p>
+    <div class="prompt" data-n="9" data-t="Connect Groq"><pre>I want to configure Groq transcription. I already have my Groq API key.
+
+Please:
+1. Confirm that this project supports Groq.
+2. Read its official configuration instructions.
+3. Create my .env file from .env.example if needed.
+4. Show me exactly where the API key belongs.
+5. Help me open the file safely.
+6. Let me paste the key myself.
+7. Never ask me to reveal the key in chat.
+8. Never print or display the key.
+9. Make sure the key is excluded from Git commits.
+10. Help me test transcription.
+
+Guide me one step at a time.</pre></div>
+    <div class="note warn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><p>Open <code>.env</code>, paste the key yourself and save. <strong>Never paste your API key into the chat.</strong></p></div>
+    <p class="cp-label">Checkpoint</p>
+    <ul class="check">
+      <li><label><input type="checkbox"><span>API key saved privately in <code>.env</code></span></label></li>
+      <li><label><input type="checkbox"><span>Transcription test worked</span></label></li>
+    </ul>
+  </section>
+
+  <section class="chapter" id="ch11" data-title="Local transcription">
+    <div class="ch-head"><div class="ch-num">11</div><div><div class="k">Chapter 11 · Option B</div><h2>Set up local transcription</h2></div></div>
+    <p>Skip this chapter if you're using Groq. faster-whisper runs on your own computer, so no API key is needed. It does need Python.</p>
+    <div class="prompt" data-n="10" data-t="Install local transcription"><pre>I want to use local transcription with faster-whisper.
+
+Please:
+1. Explain how it works.
+2. Check whether Python is installed.
+3. Identify any other requirements.
+4. Ask before installing anything.
+5. Set up faster-whisper the way this project expects.
+6. Test it using a short sample video.
+7. Confirm whether it works.
+
+Explain everything in beginner-friendly language.
+Do not modify unrelated files.</pre></div>
+    <p class="cp-label">Checkpoint</p>
+    <ul class="check"><li><label><input type="checkbox"><span>Local transcription works on a sample video</span></label></li></ul>
+  </section>
+
+  <!-- ===================== PART 4 ===================== -->
+  <div class="phase" data-phase="Edit"><span class="tag">Part 4 · Edit your videos</span><hr></div>
+
+  <section class="chapter" id="ch12" data-title="Find your folders">
+    <div class="ch-head"><div class="ch-num">12</div><div><div class="k">Chapter 12</div><h2>Find your video folders</h2></div></div>
+    <div class="folders">
+      <div class="folder"><code>inbox/</code><p>Raw videos go here</p></div>
+      <div class="folder"><code>outbox/</code><p>Drafts and finished videos</p></div>
+      <div class="folder"><code>my-sounds/</code><p>Your music and sound effects</p></div>
+      <div class="folder"><code>my-style.md</code><p>Your saved editing style</p></div>
+      <div class="folder"><code>my-rules.md</code><p>Rules for every edit</p></div>
+    </div>
+    <div class="prompt" data-n="11" data-t="Find my folders"><pre>Please inspect my AI video editor. Show me:
+
+1. Where to place raw videos.
+2. Where finished videos are saved.
+3. Where my editing settings are stored.
+4. Where temporary files are stored, if applicable.
+
+Explain what each folder does and show me how to open them
+in Finder or File Explorer.
+
+Do not guess folder locations. Verify them from the actual project.</pre></div>
+    <p>Then drag your test video into <code>inbox</code>.</p>
+    <p class="cp-label">Checkpoint</p>
+    <ul class="check"><li><label><input type="checkbox"><span>Your test video is in <code>inbox</code></span></label></li></ul>
+  </section>
+
+  <section class="chapter" id="ch13" data-title="Edit your first video">
+    <div class="ch-head"><div class="ch-num">13</div><div><div class="k">Chapter 13</div><h2>Edit your first video</h2></div></div>
+    <p class="lead">The quick way: in Claude Code, inside your editor folder, type <code>edit this</code>.</p>
+    <p>The guided way: paste this to control exactly what you get.</p>
+    <div class="prompt" data-n="12" data-t="Edit my first video"><pre>I have placed a raw video in my AI editor's inbox folder.
+Please help me create my first AI-edited video.
+
+My goal: a clean, professional Instagram Reel.
+
+Instructions:
+1. Inspect the footage.
+2. Remove unnecessary pauses.
+3. Remove obvious mistakes.
+4. Keep the pacing natural.
+5. Add readable captions.
+6. Use vertical 9:16 format.
+7. Avoid excessive transitions.
+8. Preserve the original message.
+9. Export as MP4.
+
+Before editing:
+- Confirm which video you'll edit.
+- Explain your editing plan.
+- Tell me which features are supported.
+- Ask for my approval.
+
+After editing:
+- Tell me the exact file location of the export.
+- Explain how to open it.
+- Report anything that couldn't be done.</pre></div>
+    <p>Review the plan, approve it, and wait. Processing can take several minutes, depending on your computer and the video. Then open your video from <code>outbox</code> and check it:</p>
+    <ul class="check">
+      <li><label><input type="checkbox"><span>The video and audio play correctly</span></label></li>
+      <li><label><input type="checkbox"><span>Captions are readable</span></label></li>
+      <li><label><input type="checkbox"><span>Unnecessary pauses were removed</span></label></li>
+      <li><label><input type="checkbox"><span>It's vertical (9:16) and nothing important is missing</span></label></li>
+    </ul>
+  </section>
+
+  <section class="chapter" id="ch14" data-title="Your editing style">
+    <div class="ch-head"><div class="ch-num">14</div><div><div class="k">Chapter 14</div><h2>Customize your editing style</h2></div></div>
+    <p>Make the editor yours. free247editor saves your choices in <code>my-style.md</code>, so every future edit follows them.</p>
+    <div class="prompt" data-n="13" data-t="Create my editing style"><pre>I want to create my personal AI video editing style. Please ask me about:
+
+1. My brand colors.
+2. My preferred fonts.
+3. My caption style.
+4. My preferred editing pace.
+5. My transition preferences.
+6. My background music preferences.
+7. My logo placement.
+8. My preferred export settings.
+
+Ask one question at a time.
+
+Once I've answered:
+- Check which settings my editor supports.
+- Explain any limitations.
+- Save my preferences in my style file.
+- Show me how they'll be reused.
+
+Do not overwrite existing settings without my approval.</pre></div>
+    <div class="tbl"><table>
+      <thead><tr><th>Setting</th><th>Example answer</th></tr></thead>
+      <tbody>
+        <tr><td>Colors</td><td>Burgundy and cream</td></tr>
+        <tr><td>Captions</td><td>Clean white text</td></tr>
+        <tr><td>Pacing</td><td>Natural and professional</td></tr>
+        <tr><td>Transitions</td><td>Minimal</td></tr>
+        <tr><td>Music</td><td>Soft background music (add your own files to <code>my-sounds/</code>)</td></tr>
+      </tbody>
+    </table></div>
+    <p style="font-size:14px;color:var(--muted)">No stock music or footage is included, so bring your own.</p>
+    <ul class="check"><li><label><input type="checkbox"><span>Your style is saved</span></label></li></ul>
+  </section>
+
+  <section class="chapter" id="ch15" data-title="Request revisions">
+    <div class="ch-head"><div class="ch-num">15</div><div><div class="k">Chapter 15</div><h2>Request revisions</h2></div></div>
+    <p>Your first edit doesn't have to be perfect. Just say what to change, in English, Tagalog or Taglish:</p>
+    <div class="says"><span>"Make the captions smaller."</span><span>"Remove the background music."</span><span>"Cut the intro shorter."</span><span>"Gawing mas natural yung pacing."</span></div>
+    <p>Want a change on every future video? Tell Claude to save it as a rule, and it goes into <code>my-rules.md</code>.</p>
+    <div class="prompt" data-n="14" data-t="Revise my video"><pre>Please revise my latest edited video.
+
+Here are the changes I want:
+[INSERT YOUR CHANGES]
+
+Keep everything else the same where possible.
+
+Please:
+1. Explain what you'll change.
+2. Confirm which files will be affected.
+3. Save the revision as a new version.
+4. Do not overwrite my original export.
+5. Tell me where the updated video is.</pre></div>
+    <ul class="check"><li><label><input type="checkbox"><span>Revision done, and the original kept</span></label></li></ul>
+  </section>
+
+  <!-- ===================== PART 5 ===================== -->
+  <div class="phase" data-phase="Reference"><span class="tag">Part 5 · Reference</span><hr></div>
+
+  <section class="chapter" id="ch16" data-title="Troubleshooting">
+    <div class="ch-head"><div class="ch-num">16</div><div><div class="k">Chapter 16</div><h2>Troubleshooting</h2></div></div>
+    <p>You don't need to solve problems alone. Start here:</p>
+    <div class="prompt" data-n="15" data-t="Troubleshoot my editor"><pre>I'm having a problem with my AI video editor. I'm a beginner.
+
+Please:
+1. Inspect my current project.
+2. Identify the likely problem.
+3. Explain it in simple language.
+4. Recommend the safest solution.
+5. Ask before changing anything.
+6. Fix one issue at a time.
+7. Test whether the issue is resolved.
+
+Do not delete my raw videos, finished exports or project settings.
+Do not expose private credentials.</pre></div>
+    <div class="tbl"><table>
+      <thead><tr><th>Problem</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><td>Claude can't find your video</td><td>Confirm it's in the <code>inbox</code> folder</td></tr>
+        <tr><td>Git installation fails</td><td>Ask Claude to inspect the error</td></tr>
+        <tr><td>Node.js isn't recognized</td><td>Check it's version 22+, then restart your computer</td></tr>
+        <tr><td>FFmpeg isn't working</td><td>Ask Claude to verify the installation</td></tr>
+        <tr><td>Groq transcription fails</td><td>Check the key in <code>.env</code> and your Groq limits</td></tr>
+        <tr><td>Captions don't appear</td><td>Confirm transcription works first</td></tr>
+        <tr><td>Export fails</td><td>Check the error and your free storage</td></tr>
+        <tr><td>Claude hits a usage limit</td><td>Check your plan's limits and try again later</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="chapter" id="ch17" data-title="Prompt library">
+    <div class="ch-head"><div class="ch-num">17</div><div><div class="k">Chapter 17</div><h2>Your complete prompt library</h2></div></div>
+    <p>Every prompt in one place. Tap one to jump to it and copy.</p>
+    <div class="lib" id="lib"></div>
+  </section>
+
+  <section class="chapter" id="ch18" data-title="Final checklist">
+    <div class="ch-head"><div class="ch-num">18</div><div><div class="k">Chapter 18</div><h2>Your final checklist</h2></div></div>
+    <p class="cp-label">Software setup</p>
+    <ul class="check">
+      <li><label><input type="checkbox"><span>Claude Code, Git, Node.js 22+, FFmpeg and Chrome are ready</span></label></li>
+      <li><label><input type="checkbox"><span>free247editor is installed and the test video rendered</span></label></li>
+    </ul>
+    <p class="cp-label">Transcription</p>
+    <ul class="check"><li><label><input type="checkbox"><span>Groq or faster-whisper is working</span></label></li></ul>
+    <p class="cp-label">Video editing</p>
+    <ul class="check">
+      <li><label><input type="checkbox"><span>First edit exported as MP4 to <code>outbox</code> and reviewed</span></label></li>
+      <li><label><input type="checkbox"><span>You requested a revision</span></label></li>
+    </ul>
+    <p class="cp-label">Personalization</p>
+    <ul class="check"><li><label><input type="checkbox"><span>Your style and rules are saved</span></label></li></ul>
+  </section>
+
+  <section class="chapter" id="ch19" data-title="Congratulations!">
+    <div class="finale">
+      <div class="eyebrow">Chapter 19</div>
+      <h2>Congratulations! You built your own AI video editor.</h2>
+      <p>You started with no coding experience. Now you know what Git, Node.js, FFmpeg, transcription and API keys are, and you've directed Claude to edit your videos.</p>
+      <p>Keep experimenting. Try new formats, improve your prompts and refine your style. AI is a tool. Your ideas, creativity and judgment are what make your content valuable.</p>
+      <p class="mantra">Keep learning. Keep creating. Keep building.</p>
+      <div class="sign">— Hana Marigmen</div>
+    </div>
+  </section>
+
+  </main>
+</div>
+
+<footer><div class="in pad"><span>Build Your Own AI Video Editor · Created by Hana Marigmen</span><span>free247editor is a third-party open-source project (MIT license).</span></div></footer>
+
+<script>
+(function(){
+  // prompts: build header + copy button
+  var prompts=[].slice.call(document.querySelectorAll('.prompt'));
+  var libItems=[];
+  prompts.forEach(function(p,i){
+    var n=p.getAttribute('data-n'), t=p.getAttribute('data-t');
+    if(n){p.id='prompt-'+n;libItems.push({n:n,t:t,ch:p.closest('.chapter').getAttribute('data-title')});}
+    var top=document.createElement('div');top.className='prompt-top';
+    var lab=document.createElement('div');
+    lab.innerHTML=(n?'<span class="pn">PROMPT '+n+'</span> · ':'')+'<span class="pt"></span>';
+    lab.querySelector('.pt').textContent=t;
+    var b=document.createElement('button');b.type='button';b.className='copy';b.id='copy-'+i;b.textContent='Copy prompt';
+    b.addEventListener('click',function(){
+      var txt=p.querySelector('pre').textContent;
+      var ok=function(){b.textContent='Copied';b.classList.add('done');setTimeout(function(){b.textContent='Copy prompt';b.classList.remove('done');},1800);};
+      var fallback=function(){var r=document.createRange();r.selectNodeContents(p.querySelector('pre'));var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected · press Ctrl/Cmd+C';};
+      try{navigator.clipboard.writeText(txt).then(ok,fallback);}catch(e){fallback();}
+    });
+    top.appendChild(lab);top.appendChild(b);p.insertBefore(top,p.firstChild);
+  });
+  var lib=document.getElementById('lib');
+  libItems.forEach(function(it){
+    var a=document.createElement('a');a.href='#prompt-'+it.n;
+    a.innerHTML='<b>'+(it.n<10?'0':'')+it.n+'</b><span></span>';
+    a.querySelector('span').textContent=it.t;
+    var s=document.createElement('small');s.textContent=it.ch;a.querySelector('span').appendChild(s);
+    lib.appendChild(a);
+  });
+
+  // chapter nav (rail + mobile select)
+  var chapters=[].slice.call(document.querySelectorAll('.chapter'));
+  var rail=document.getElementById('rail-list'), sel=document.getElementById('chapter-jump');
+  var links={},currentOl=null,currentPhase=null;
+  chapters.forEach(function(c,i){
+    var ph=c.previousElementSibling&&c.previousElementSibling.classList.contains('phase')?c.previousElementSibling.getAttribute('data-phase'):null;
+    if(ph){var d=document.createElement('div');d.className='phase-name';d.textContent=ph;rail.appendChild(d);currentOl=document.createElement('ol');rail.appendChild(currentOl);currentPhase=document.createElement('optgroup');currentPhase.label=ph;sel.appendChild(currentPhase);}
+    var num=(i+1<10?'0':'')+(i+1);
+    var li=document.createElement('li');var a=document.createElement('a');a.href='#'+c.id;a.innerHTML='<span>'+num+'</span><em style="font-style:normal"></em>';a.querySelector('em').textContent=c.getAttribute('data-title');li.appendChild(a);currentOl.appendChild(li);links[c.id]=a;
+    var o=document.createElement('option');o.value=c.id;o.textContent=num+' · '+c.getAttribute('data-title');currentPhase.appendChild(o);
+  });
+  sel.addEventListener('change',function(){var t=document.getElementById(sel.value);if(t)t.scrollIntoView({behavior:'smooth'});});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){Object.keys(links).forEach(function(k){links[k].classList.remove('on')});links[e.target.id].classList.add('on');sel.value=e.target.id;}});},{rootMargin:'-30% 0px -60% 0px'});
+    chapters.forEach(function(c){io.observe(c)});
+  }
+
+  // checkpoints with saved progress
+  var boxes=[].slice.call(document.querySelectorAll('.check input'));
+  var KEY='aive-playbook-progress-v1',saved={};
+  try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){saved={};}
+  var bar=document.getElementById('prog-bar'),num=document.getElementById('prog-num'),mini=document.getElementById('mini-progress');
+  function update(){var d=boxes.filter(function(b){return b.checked}).length;var pct=Math.round(d/boxes.length*100);bar.style.width=pct+'%';num.textContent=d+' / '+boxes.length;mini.textContent=pct+'% done';}
+  boxes.forEach(function(b,i){
+    b.id='cp-'+i;if(saved[b.id])b.checked=true;
+    b.addEventListener('change',function(){saved[b.id]=b.checked;try{localStorage.setItem(KEY,JSON.stringify(saved));}catch(e){}update();});
+  });
+  update();
+})();
+</script>
+</body>
+</html>
