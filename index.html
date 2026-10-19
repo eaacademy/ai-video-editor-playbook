@@ -231,6 +231,36 @@ td:first-child{font-weight:700}
 .finale .mantra{font:italic 400 clamp(22px,2.6vw,30px)/1.3 var(--display);color:var(--gold-ink);margin:26px 0 8px}
 .finale .sign{color:var(--wine)}
 
+/* video slots (placeholder until Hana's videos are added) */
+.vid{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:18px;background:var(--surface);border:1.5px dashed var(--gold);display:grid;place-items:center;text-align:center;margin:0 0 22px;padding:16px}
+.vid .play{width:64px;height:64px;border-radius:50%;background:var(--wine);display:grid;place-items:center;margin:0 auto 12px}
+.vid b{display:block;font:400 22px/1.2 var(--display);color:var(--wine)}
+.vid small{display:block;margin-top:6px;font-size:13px;color:var(--muted)}
+
+/* next step: waitlist offers */
+.next{margin-top:28px}
+.next-head{text-align:center;margin-bottom:22px}
+.next-head h3{font:400 clamp(28px,3.4vw,40px)/1.1 var(--display);color:var(--wine);margin:10px 0 8px;text-transform:none;letter-spacing:0}
+.next-head p{color:var(--muted);margin:0 auto;max-width:56ch}
+.offers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.offer{background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px;text-align:left}
+.offer.feat{border:2px solid var(--gold)}
+.offer .soon{align-self:flex-start;font:800 11px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;background:var(--surface);color:var(--gold-ink);border:1px solid var(--line);padding:7px 10px;border-radius:99px}
+.offer .tier{font:800 12px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.offer h4{font:400 28px/1.1 var(--display);color:var(--wine);margin:0}
+.offer p{margin:0;font-size:15px;line-height:1.55;color:var(--muted)}
+.offer ul{margin:0;padding-left:20px;font-size:15px;line-height:1.5}
+.offer li{margin-bottom:4px}
+.offer .price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+.offer .price b{font:400 34px/1 var(--display);color:var(--fg)}
+.offer .price span{font-size:13px;color:var(--muted)}
+.offer .perk{background:var(--surface);border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.45;color:var(--fg)}
+.offer .perk strong{color:var(--wine)}
+.offer .btn{justify-content:center}
+.btn-wine{background:var(--wine);color:var(--on-wine)}
+.btn-wine:hover{background:var(--wine-deep);color:var(--on-wine)}
+@media (max-width:760px){.offers{grid-template-columns:1fr}}
+
 footer{border-top:1px solid var(--line)}
 footer .in{max-width:1180px;margin:0 auto;padding-block:28px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted)}
 
@@ -320,6 +350,10 @@ footer .in{max-width:1180px;margin:0 auto;padding-block:28px;display:flex;flex-w
 
   <section class="chapter" id="ch1" data-title="Welcome">
     <div class="ch-head"><div class="ch-num">01</div><div><div class="k">Chapter 1</div><h2>Welcome</h2></div></div>
+    <!-- WELCOME VIDEO: replace this placeholder with Hana's 30–60 sec welcome video -->
+    <div class="vid" id="welcome-video">
+      <div><div class="play" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M8 5v14l11-7z"/></svg></div><b>A welcome from Hana</b><small>Video coming soon · 45 seconds</small></div>
+    </div>
     <div class="letter">
       <p class="lead">Hi! I'm Hana. I'm a business owner, not a programmer.</p>
       <p>Like many business owners, I'm always juggling responsibilities and looking for practical ways to make running a business simpler. That's what led me to experiment with Claude Code.</p>
@@ -883,12 +917,58 @@ Do not expose private credentials.</pre></div>
 
   <section class="chapter" id="ch19" data-title="Congratulations!">
     <div class="finale">
+      <!-- ENDING VIDEO: replace this placeholder with Hana's ending video -->
+      <div class="vid" id="ending-video" style="background:var(--bg)">
+        <div><div class="play" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M8 5v14l11-7z"/></svg></div><b>You did it! A message from Hana</b><small>Video coming soon · 1 minute</small></div>
+      </div>
       <div class="eyebrow">Chapter 19</div>
       <h2>Congratulations! You built your own AI video editor.</h2>
       <p>You started with no coding experience. Now you know what Git, Node.js, FFmpeg, transcription and API keys are, and you've directed Claude to edit your videos.</p>
       <p>Keep experimenting. Try new formats, improve your prompts and refine your style. AI is a tool. Your ideas, creativity and judgment are what make your content valuable.</p>
       <p class="mantra">Keep learning. Keep creating. Keep building.</p>
       <div class="sign">— Hana Marigmen</div>
+    </div>
+
+    <div class="next" id="next-step">
+      <div class="next-head">
+        <div class="eyebrow">Your next step</div>
+        <h3>Want to go further?</h3>
+        <p>Two new ways to work with Hana are launching soon. Join a waitlist to get first access and a playbook-owner perk.</p>
+      </div>
+      <div class="offers">
+        <div class="offer feat">
+          <span class="soon">Coming soon · Waitlist open</span>
+          <span class="tier">Tier 2 · Video-guided</span>
+          <h4>Build It With Me</h4>
+          <p>Watch Hana do every step on screen and follow along, on Mac and Windows.</p>
+          <ul>
+            <li>Step-by-step video walkthrough of the full setup</li>
+            <li>Troubleshooting video library</li>
+            <li>Advanced prompts pack</li>
+            <li>Q&amp;A access</li>
+          </ul>
+          <div class="price"><b>CA$197</b><span>planned launch price</span></div>
+          <div class="perk"><strong>Waitlist perk:</strong> first access, plus your CA$75 playbook purchase credited toward it.</div>
+          <!-- TIER 2 WAITLIST: replace href with the waitlist form link -->
+          <a class="btn btn-wine" href="#next-step" data-waitlist="tier-2">Join the waitlist</a>
+        </div>
+        <div class="offer">
+          <span class="soon">Coming soon · Waitlist open</span>
+          <span class="tier">Tier 3 · Done with you</span>
+          <h4>1-on-1 Setup Session</h4>
+          <p>Get it working on your own computer, live with Hana, in one session.</p>
+          <ul>
+            <li>60-minute live setup call</li>
+            <li>Your editing style saved</li>
+            <li>Your first real video edited live</li>
+            <li>7 days of support after the call</li>
+          </ul>
+          <div class="price"><b>CA$497</b><span>planned price · 4 slots a month</span></div>
+          <div class="perk"><strong>Waitlist perk:</strong> first pick of the launch-month slots.</div>
+          <!-- TIER 3 WAITLIST: replace href with the waitlist form link -->
+          <a class="btn btn-wine" href="#next-step" data-waitlist="tier-3">Join the waitlist</a>
+        </div>
+      </div>
     </div>
   </section>
 
