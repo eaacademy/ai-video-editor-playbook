@@ -27,11 +27,23 @@ for name in ("welcome.mp4", "ending.mp4", "welcome-poster.jpg", "ending-poster.j
 page = swap(page, "footer{border-top:1px solid var(--line)}",
             ".signout{display:inline-block;margin-top:12px;font:700 12px/1 var(--body);letter-spacing:.12em;"
             "text-transform:uppercase;color:var(--muted);text-decoration:none}"
-            ".signout:hover{color:var(--wine)}\nfooter{border-top:1px solid var(--line)}")
+            ".signout:hover{color:var(--wine)}"
+            ".signout-top{position:fixed;top:16px;right:20px;z-index:30;display:inline-flex;align-items:center;"
+            "min-height:42px;padding:0 20px;border-radius:999px;background:var(--surface);border:1px solid var(--line);"
+            "box-shadow:0 2px 10px rgba(58,14,28,.12);font:700 14px/1 var(--body);letter-spacing:.12em;"
+            "text-transform:uppercase;color:var(--wine);text-decoration:none}"
+            ".signout-top:hover{background:var(--wine);color:#FFFFFF;border-color:var(--wine)}"
+            ".signout-bar{display:none}"
+            "@media (max-width:980px){.signout-top{display:none}.signout-bar{display:inline-flex;align-items:center;"
+            "min-height:44px;font:700 13px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;"
+            "color:var(--wine);text-decoration:none;white-space:nowrap}}"
+            "\nfooter{border-top:1px solid var(--line)}")
 page = swap(page,
-            "<small>Tick the checkpoints as you go. Your progress is saved in this browser.</small>\n    </div>",
-            "<small>Tick the checkpoints as you go. Your progress is saved in this browser.</small>\n"
-            '      <a class="signout" href="/sign-out">Sign out</a>\n    </div>')
+            '<nav class="mobile-nav" aria-label="Chapters">',
+            '<a class="signout-top" href="/sign-out">Sign out</a>\n<nav class="mobile-nav" aria-label="Chapters">')
+page = swap(page,
+            '<span class="mini" id="mini-progress">0%</span>',
+            '<span class="mini" id="mini-progress">0%</span>\n    <a class="signout-bar" href="/sign-out">Sign out</a>')
 page = swap(page,
             "<span>free247editor is a third-party open-source project (MIT license).</span></div></footer>",
             "<span>free247editor is a third-party open-source project (MIT license).</span>"
