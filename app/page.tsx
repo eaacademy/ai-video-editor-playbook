@@ -294,7 +294,7 @@ export default async function Home() {
                 Reach out to Hana for your code before you check out, then enter it on the checkout page under{" "}
                 <strong>Add promotion code</strong>.
               </p>
-              <a className="sp-community-btn" href="https://ig.me/m/hana.marigmen" target="_blank" rel="noopener">
+              <a className="sp-community-btn" href="https://m.me/precious.marigmen" target="_blank" rel="noopener">
                 Message Hana for your code
               </a>
             </div>
