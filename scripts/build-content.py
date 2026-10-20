@@ -26,6 +26,8 @@ for name in ("welcome.mp4", "ending.mp4", "welcome-poster.jpg", "ending-poster.j
 
 # bump when a cover image is replaced, so browsers don't keep showing the old one
 page = swap(page, '"/media/sample-poster.jpg"', '"/media/sample-poster.jpg?v=2"')
+page = swap(page, '"/media/ending.mp4"', '"/media/ending.mp4?v=2"')
+page = swap(page, '"/media/ending-poster.jpg"', '"/media/ending-poster.jpg?v=2"')
 
 page = swap(page, "footer{border-top:1px solid var(--line)}",
             ".signout{display:inline-block;margin-top:12px;font:700 12px/1 var(--body);letter-spacing:.12em;"
