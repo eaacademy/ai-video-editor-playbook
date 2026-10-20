@@ -68,7 +68,18 @@ export async function POST(request: Request) {
     console.log(`[stripe-webhook] ${session.id}: ${result}`);
     return Response.json({ received: true, result });
   } catch (error) {
-    // 500 makes Stripe retry later.
+    // Clerk refused the request itself (e.g. a mistyped email address). Retrying can't fix that,
+    // so acknowledge it and flag it for a manual invitation instead of letting Stripe retry for days.
+    const status = (error as { status?: number }).status;
+    if (typeof status === "number" && status >= 400 && status < 500 && status !== 429) {
+      const detail =
+        (error as { errors?: { longMessage?: string; message?: string }[] }).errors?.[0]?.longMessage ??
+        (error as { errors?: { message?: string }[] }).errors?.[0]?.message ??
+        "rejected by Clerk";
+      console.error(`[stripe-webhook] ${session.id}: Clerk rejected ${email}: ${detail}`);
+      return Response.json({ received: true, result: "needs-manual-invite", email, reason: detail });
+    }
+    // Anything else (Clerk down, network) gets a 500 so Stripe retries later.
     console.error("[stripe-webhook] could not grant access for", session.id, error);
     return new Response("Could not grant access", { status: 500 });
   }
