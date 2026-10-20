@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 const HANDLED = new Set(["checkout.session.completed", "checkout.session.async_payment_succeeded"]);
 
 function requiredEnv(name: string): string {
-  const value = process.env[name];
+  const value = process.env[name]?.trim();
   if (!value) throw new Error(`Missing environment variable ${name}`);
   return value;
 }
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
   const session = event.data.object as Stripe.Checkout.Session;
 
   // Only the playbook's Payment Link grants access (when configured), so other products don't.
-  const onlyLink = process.env.STRIPE_PAYMENT_LINK_ID;
+  const onlyLink = process.env.STRIPE_PAYMENT_LINK_ID?.trim();
   const sessionLink = typeof session.payment_link === "string" ? session.payment_link : session.payment_link?.id;
   if (onlyLink && sessionLink !== onlyLink) {
     return Response.json({ received: true, ignored: "different payment link" });
