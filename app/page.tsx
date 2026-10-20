@@ -156,10 +156,6 @@ export default async function Home() {
                 <p>Jump to any of the 19 chapters from the side menu, or from the chapter picker on your phone.</p>
               </div>
               <div>
-                <b>Videos from Hana</b>
-                <p>A personal welcome, and a wrap-up video that unlocks when you finish every checkpoint.</p>
-              </div>
-              <div>
                 <b>Always up to date</b>
                 <p>Tools change. When the steps change, the portal is updated, and you see the new version.</p>
               </div>
@@ -228,7 +224,6 @@ export default async function Home() {
               ))}
             </div>
             <ul className="sp-extras">
-              <li>A personal welcome and wrap-up video from Hana</li>
               <li>Checkpoints that track your progress</li>
               <li>A prompt library to copy and paste</li>
               <li>A troubleshooting chapter for when things go sideways</li>
@@ -268,7 +263,6 @@ export default async function Home() {
                 <li>Your own login to the interactive members portal</li>
                 <li>All 19 chapters, with progress tracking</li>
                 <li>15 one-click copy-and-paste prompts</li>
-                <li>Welcome and wrap-up videos from Hana</li>
                 <li>Progress checkpoints and a final checklist</li>
                 <li>
                   <strong>Bonus:</strong> your {PRICE} counts toward the video-guided program when it launches
