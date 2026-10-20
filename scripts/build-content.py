@@ -24,6 +24,9 @@ page = page.replace('<meta name="claude:viewport-fit-sides" content="cover">\n',
 for name in ("welcome.mp4", "ending.mp4", "welcome-poster.jpg", "ending-poster.jpg", "sample.mp4", "sample-poster.jpg"):
     page = swap(page, f'"videos/{name}"', f'"/media/{name}"')
 
+# bump when a cover image is replaced, so browsers don't keep showing the old one
+page = swap(page, '"/media/sample-poster.jpg"', '"/media/sample-poster.jpg?v=2"')
+
 page = swap(page, "footer{border-top:1px solid var(--line)}",
             ".signout{display:inline-block;margin-top:12px;font:700 12px/1 var(--body);letter-spacing:.12em;"
             "text-transform:uppercase;color:var(--muted);text-decoration:none}"
