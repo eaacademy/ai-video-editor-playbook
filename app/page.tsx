@@ -100,7 +100,9 @@ export default async function Home() {
                 from instructions in plain English. No coding experience required.
               </p>
               <BuyButton href={buyUrl} />
-              <p className="sp-fine">One-time payment · Instant access · Created by Hana Marigmen</p>
+              <p className="sp-fine">
+                Not a PDF. A private, interactive members portal · One-time payment · Instant access
+              </p>
             </div>
             <figure className="sp-phone">
               <video
@@ -124,6 +126,44 @@ export default async function Home() {
             <div><b>19</b><span>step-by-step chapters</span></div>
             <div><b>15</b><span>copy-and-paste prompts</span></div>
             <div><b>30–90</b><span>minutes to set up</span></div>
+          </div>
+        </section>
+
+        {/* Not a PDF */}
+        <section className="sp-sec sp-portal">
+          <div className="sp-wrap">
+            <div className="eyebrow">Not just another PDF</div>
+            <h2 className="sp-h2">An interactive members portal you work through, step by step</h2>
+            <p className="sp-sub">
+              You don&apos;t download a file and get lost in it. You log in to your own private portal that walks you
+              through the setup and keeps track of where you are.
+            </p>
+            <div className="sp-feats">
+              <div>
+                <b>Your own login</b>
+                <p>A personal account on a private members site. Sign in from any computer, any time.</p>
+              </div>
+              <div>
+                <b>One-click copy prompts</b>
+                <p>15 ready-made prompts. Click copy, paste into Claude, done. No retyping, no typos.</p>
+              </div>
+              <div>
+                <b>Progress tracking</b>
+                <p>Tick the checkpoints as you go and watch your progress bar fill up. Your progress is saved on your device.</p>
+              </div>
+              <div>
+                <b>Chapter navigation</b>
+                <p>Jump to any of the 19 chapters from the side menu, or from the chapter picker on your phone.</p>
+              </div>
+              <div>
+                <b>Videos from Hana</b>
+                <p>A personal welcome, and a wrap-up video that unlocks when you finish every checkpoint.</p>
+              </div>
+              <div>
+                <b>Always up to date</b>
+                <p>Tools change. When the steps change, the portal is updated, and you see the new version.</p>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -225,8 +265,9 @@ export default async function Home() {
                 <small>one-time</small>
               </div>
               <ul className="sp-includes">
-                <li>All 19 chapters on your private members site</li>
-                <li>15 copy-and-paste prompts</li>
+                <li>Your own login to the interactive members portal</li>
+                <li>All 19 chapters, with progress tracking</li>
+                <li>15 one-click copy-and-paste prompts</li>
                 <li>Welcome and wrap-up videos from Hana</li>
                 <li>Progress checkpoints and a final checklist</li>
                 <li>
