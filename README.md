@@ -11,8 +11,9 @@ A single static web page. There is no framework, no build step and no dependenci
 | `index.html` | The whole playbook: content, styles and scripts |
 | `vercel.json` | Vercel settings: clean URLs, basic security headers, and `noindex` so search engines don't list the paid playbook |
 | `.gitignore` | Keeps secrets, dependencies and local files out of Git |
+| `videos/` | Welcome and ending videos (web-optimized H.264 MP4, fast start) and their cover images |
 
-The page loads its fonts from Google Fonts. Everything else is in `index.html`.
+The page loads its fonts from Google Fonts. Everything else is in `index.html` and `videos/`.
 
 ## Deploying on Vercel
 

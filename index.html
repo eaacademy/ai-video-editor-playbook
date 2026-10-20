@@ -237,6 +237,11 @@ td:first-child{font-weight:700}
 .vid b{display:block;font:400 22px/1.2 var(--display);color:var(--wine)}
 .vid small{display:block;margin-top:6px;font-size:13px;color:var(--muted)}
 
+/* video players */
+.player{margin:0 0 24px}
+.player video{display:block;width:100%;max-width:100%;aspect-ratio:16/9;height:auto;border-radius:18px;background:#1E070E;border:1px solid var(--line);box-shadow:0 0 0 4px var(--surface)}
+.player figcaption{margin-top:12px;font:700 12px/1.3 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink);text-align:center}
+
 /* next step: waitlist offers */
 .next{margin-top:28px}
 .next-head{text-align:center;margin-bottom:22px}
@@ -350,10 +355,13 @@ footer .in{max-width:1180px;margin:0 auto;padding-block:28px;display:flex;flex-w
 
   <section class="chapter" id="ch1" data-title="Welcome">
     <div class="ch-head"><div class="ch-num">01</div><div><div class="k">Chapter 1</div><h2>Welcome</h2></div></div>
-    <!-- WELCOME VIDEO: replace this placeholder with Hana's 30–60 sec welcome video -->
-    <div class="vid" id="welcome-video">
-      <div><div class="play" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M8 5v14l11-7z"/></svg></div><b>A welcome from Hana</b><small>Video coming soon · 45 seconds</small></div>
-    </div>
+    <figure class="player" id="welcome-video">
+      <video controls playsinline preload="metadata" poster="videos/welcome-poster.jpg" aria-label="A welcome from Hana">
+        <source src="videos/welcome.mp4" type="video/mp4">
+        Your browser can't play this video.
+      </video>
+      <figcaption>A welcome from Hana · 31 seconds</figcaption>
+    </figure>
     <div class="letter">
       <p class="lead">Hi! I'm Hana. I'm a business owner, not a programmer.</p>
       <p>Like many business owners, I'm always juggling responsibilities and looking for practical ways to make running a business simpler. That's what led me to experiment with Claude Code.</p>
@@ -917,10 +925,13 @@ Do not expose private credentials.</pre></div>
 
   <section class="chapter" id="ch19" data-title="Congratulations!">
     <div class="finale">
-      <!-- ENDING VIDEO: replace this placeholder with Hana's ending video -->
-      <div class="vid" id="ending-video" style="background:var(--bg)">
-        <div><div class="play" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M8 5v14l11-7z"/></svg></div><b>You did it! A message from Hana</b><small>Video coming soon · 1 minute</small></div>
-      </div>
+      <figure class="player" id="ending-video">
+        <video controls playsinline preload="metadata" poster="videos/ending-poster.jpg" aria-label="You did it! A message from Hana">
+          <source src="videos/ending.mp4" type="video/mp4">
+          Your browser can't play this video.
+        </video>
+        <figcaption>You did it! A message from Hana · 48 seconds</figcaption>
+      </figure>
       <div class="eyebrow">Chapter 19</div>
       <h2>Congratulations! You built your own AI video editor.</h2>
       <p>You started with no coding experience. Now you know what Git, Node.js, FFmpeg, transcription and API keys are, and you've directed Claude to edit your videos.</p>
