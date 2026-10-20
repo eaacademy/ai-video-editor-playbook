@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Build Your Own AI Video Editor: Hana Marigmen's step-by-step beginner playbook for setting up an AI-assisted video editor with Claude Code. No coding required.">
+<meta name="robots" content="noindex,nofollow">
 <style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Build Your Own AI Video Editor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -266,6 +266,7 @@ td:first-child{font-weight:700}
 .btn-wine:hover{background:var(--wine-deep);color:var(--on-wine)}
 @media (max-width:760px){.offers{grid-template-columns:1fr}}
 
+.signout{display:inline-block;margin-top:12px;font:700 12px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none}.signout:hover{color:var(--wine)}
 footer{border-top:1px solid var(--line)}
 footer .in{max-width:1180px;margin:0 auto;padding-block:28px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted)}
 
@@ -344,6 +345,7 @@ footer .in{max-width:1180px;margin:0 auto;padding-block:28px;display:flex;flex-w
       <div class="lbl"><span>Your progress</span><b id="prog-num">0 / 0</b></div>
       <div class="meter"><i id="prog-bar"></i></div>
       <small>Tick the checkpoints as you go. Your progress is saved in this browser.</small>
+      <a class="signout" href="/sign-out">Sign out</a>
     </div>
     <div id="rail-list"></div>
   </aside>
@@ -356,8 +358,8 @@ footer .in{max-width:1180px;margin:0 auto;padding-block:28px;display:flex;flex-w
   <section class="chapter" id="ch1" data-title="Welcome">
     <div class="ch-head"><div class="ch-num">01</div><div><div class="k">Chapter 1</div><h2>Welcome</h2></div></div>
     <figure class="player" id="welcome-video">
-      <video controls playsinline preload="metadata" poster="videos/welcome-poster.jpg" aria-label="A welcome from Hana">
-        <source src="videos/welcome.mp4" type="video/mp4">
+      <video controls playsinline preload="metadata" poster="/media/welcome-poster.jpg" aria-label="A welcome from Hana">
+        <source src="/media/welcome.mp4" type="video/mp4">
         Your browser can't play this video.
       </video>
       <figcaption>A welcome from Hana · 31 seconds</figcaption>
@@ -926,8 +928,8 @@ Do not expose private credentials.</pre></div>
   <section class="chapter" id="ch19" data-title="Congratulations!">
     <div class="finale">
       <figure class="player" id="ending-video">
-        <video controls playsinline preload="metadata" poster="videos/ending-poster.jpg" aria-label="You did it! A message from Hana">
-          <source src="videos/ending.mp4" type="video/mp4">
+        <video controls playsinline preload="metadata" poster="/media/ending-poster.jpg" aria-label="You did it! A message from Hana">
+          <source src="/media/ending.mp4" type="video/mp4">
           Your browser can't play this video.
         </video>
         <figcaption>You did it! A message from Hana · 48 seconds</figcaption>
@@ -984,7 +986,7 @@ Do not expose private credentials.</pre></div>
   </main>
 </div>
 
-<footer><div class="in pad"><span>Build Your Own AI Video Editor · Created by Hana Marigmen</span><span>free247editor is a third-party open-source project (MIT license).</span></div></footer>
+<footer><div class="in pad"><span>Build Your Own AI Video Editor · Created by Hana Marigmen</span><span>free247editor is a third-party open-source project (MIT license).</span><a class="signout" style="margin-top:0" href="/sign-out">Sign out</a></div></footer>
 
 <script>
 (function(){

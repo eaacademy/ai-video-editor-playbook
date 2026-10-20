@@ -8,9 +8,12 @@ node_modules/
 *.pem
 *.key
 
-# Vercel CLI local link and build output
+# Next.js / Vercel build output
+.next/
+out/
 .vercel/
 .output/
+*.tsbuildinfo
 
 # Logs
 npm-debug.log*
