@@ -238,6 +238,31 @@ export default async function Home() {
                 After checkout, check your email for your invitation from EA Academy to create your login.
               </p>
             </div>
+
+            <div className="sp-community">
+              <div className="eyebrow">EA Academy community</div>
+              <h3>Part of EA Academy? You may qualify for a discount code.</h3>
+              <div className="sp-community-grid">
+                <div>
+                  <h4>Active interns</h4>
+                  <p>
+                    You attended your weekly check-ins in the past 30 days, verified by your batch leader and batch
+                    manager.
+                  </p>
+                </div>
+                <div>
+                  <h4>Past clients</h4>
+                  <p>You&apos;ve worked with EA Academy as a client.</p>
+                </div>
+              </div>
+              <p className="sp-community-how">
+                Reach out to Hana for your code before you check out, then enter it on the checkout page under{" "}
+                <strong>Add promotion code</strong>.
+              </p>
+              <a className="sp-community-btn" href="https://ig.me/m/hana.marigmen" target="_blank" rel="noopener">
+                Message Hana for your code
+              </a>
+            </div>
           </div>
         </section>
 

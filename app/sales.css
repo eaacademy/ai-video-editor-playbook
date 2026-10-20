@@ -127,3 +127,23 @@
 .sp-foot { border-top: 1px solid var(--line); padding: 26px 0; font-size: 14px; color: var(--muted); }
 .sp-foot-in { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
 .sp-foot strong { color: var(--fg); }
+
+/* EA Academy community discount */
+.sp-community {
+  max-width: 760px; margin: 40px auto 0; padding: clamp(24px, 4vw, 36px);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 22px; text-align: center;
+}
+.sp-community h3 { font: 400 clamp(24px, 3.4vw, 32px)/1.15 var(--display); color: var(--wine); margin: 10px auto 0; max-width: 24ch; text-wrap: balance; }
+.sp-community-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; text-align: left; }
+.sp-community-grid > div { background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+.sp-community h4 { margin: 0; font: 800 12px/1.3 var(--body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-ink); }
+.sp-community-grid p { margin: 8px 0 0; font-size: 15px; line-height: 1.5; }
+.sp-community-how { margin: 18px auto 0; max-width: 52ch; font-size: 15px; color: var(--muted); }
+.sp-community-how strong { color: var(--fg); }
+.sp-community-btn {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 48px; margin-top: 16px; padding: 0 24px;
+  border-radius: 999px; text-decoration: none; font: 800 13px/1 var(--body); letter-spacing: 0.06em;
+  color: var(--wine); background: var(--bg); box-shadow: inset 0 0 0 1.5px var(--wine);
+}
+.sp-community-btn:hover { background: var(--wine); color: #fff; }
+@media (max-width: 560px) { .sp-community-grid { grid-template-columns: 1fr; } }
