@@ -240,6 +240,15 @@ td:first-child{font-weight:700}
 /* video players */
 .player{margin:0 0 24px}
 .player video{display:block;width:100%;max-width:100%;aspect-ratio:16/9;height:auto;border-radius:18px;background:#1E070E;border:1px solid var(--line);box-shadow:0 0 0 4px var(--surface)}
+.vlock-wrap{position:relative}
+.vlock{display:none;position:absolute;inset:0;border-radius:18px;background:rgba(30,7,14,.78);color:#FFFFFF;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:20px;text-align:center}
+.player.locked .vlock{display:flex}
+.player.locked video{pointer-events:none}
+.vlock svg{color:var(--gold)}
+.vlock b{font:400 clamp(20px,2.6vw,28px)/1.2 var(--display)}
+.vlock span{font-size:14px;opacity:.85}
+.vlock a{margin-top:6px;color:var(--gold);font:700 12px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;text-decoration:none}
+.vlock a:hover{text-decoration:underline}
 .player figcaption{margin-top:12px;font:700 12px/1.3 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink);text-align:center}
 
 /* next step: waitlist offers */
@@ -920,11 +929,18 @@ Do not expose private credentials.</pre></div>
 
   <section class="chapter" id="ch19" data-title="Congratulations!">
     <div class="finale">
-      <figure class="player" id="ending-video">
-        <video controls playsinline preload="metadata" poster="/media/ending-poster.jpg" aria-label="You did it! A message from Hana">
-          <source src="/media/ending.mp4" type="video/mp4">
-          Your browser can't play this video.
-        </video>
+      <figure class="player locked" id="ending-video">
+        <div class="vlock-wrap">
+          <video controls playsinline preload="none" poster="/media/ending-poster.jpg" data-src="/media/ending.mp4" aria-label="You did it! A message from Hana">
+            Your browser can't play this video.
+          </video>
+          <div class="vlock" id="ending-lock">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            <b>Finish the playbook to unlock this video</b>
+            <span id="ending-lock-count">Tick every checkpoint to watch it.</span>
+            <a href="#" id="ending-lock-next">Go to my next checkpoint</a>
+          </div>
+        </div>
         <figcaption>You did it! A message from Hana · 48 seconds</figcaption>
       </figure>
       <div class="eyebrow">Chapter 19</div>
@@ -1033,7 +1049,21 @@ Do not expose private credentials.</pre></div>
   var KEY='aive-playbook-progress-v1',saved={};
   try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){saved={};}
   var bar=document.getElementById('prog-bar'),num=document.getElementById('prog-num'),mini=document.getElementById('mini-progress');
-  function update(){var d=boxes.filter(function(b){return b.checked}).length;var pct=Math.round(d/boxes.length*100);bar.style.width=pct+'%';num.textContent=d+' / '+boxes.length;mini.textContent=pct+'% done';}
+  function update(){var d=boxes.filter(function(b){return b.checked}).length;var pct=Math.round(d/boxes.length*100);bar.style.width=pct+'%';num.textContent=d+' / '+boxes.length;mini.textContent=pct+'% done';lockEnding(d);}
+  // the ending video stays locked until every checkpoint is ticked
+  var endFig=document.getElementById('ending-video'),endVid=endFig&&endFig.querySelector('video');
+  function lockEnding(d){
+    if(!endVid)return;
+    var left=boxes.length-d,done=left===0;
+    endFig.classList.toggle('locked',!done);
+    if(done){if(!endVid.getAttribute('src')){endVid.setAttribute('src',endVid.getAttribute('data-src'));endVid.setAttribute('preload','metadata');}}
+    else{
+      if(endVid.getAttribute('src')){endVid.pause();endVid.removeAttribute('src');endVid.load();}
+      document.getElementById('ending-lock-count').textContent=d+' of '+boxes.length+' checkpoints done · '+left+' to go';
+    }
+  }
+  var lockNext=document.getElementById('ending-lock-next');
+  if(lockNext)lockNext.addEventListener('click',function(e){e.preventDefault();var b=boxes.filter(function(x){return !x.checked})[0];if(b){b.closest('ul').scrollIntoView({behavior:'smooth',block:'center'});}});
   boxes.forEach(function(b,i){
     b.id='cp-'+i;if(saved[b.id])b.checked=true;
     b.addEventListener('change',function(){saved[b.id]=b.checked;try{localStorage.setItem(KEY,JSON.stringify(saved));}catch(e){}update();});
