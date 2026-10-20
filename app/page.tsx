@@ -251,8 +251,8 @@ export default async function Home() {
                   </p>
                 </div>
                 <div>
-                  <h4>Past clients</h4>
-                  <p>You&apos;ve worked with EA Academy as a client.</p>
+                  <h4>Past &amp; current clients</h4>
+                  <p>You&apos;re working with EA Academy now, or have worked with us before, as a client.</p>
                 </div>
               </div>
               <p className="sp-community-how">
