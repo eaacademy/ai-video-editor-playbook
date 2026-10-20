@@ -5,7 +5,7 @@ import "./sales.css";
 
 export const dynamic = "force-dynamic";
 
-const PRICE = "CA$75";
+const PRICE = "CA$99";
 
 const PARTS = [
   { name: "Start here", chapters: ["Welcome", "What we're building", "What you need", "Meet your tools"] },
