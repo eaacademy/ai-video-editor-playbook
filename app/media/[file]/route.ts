@@ -13,6 +13,8 @@ const FILES: Record<string, string> = {
   "ending.mp4": "video/mp4",
   "welcome-poster.jpg": "image/jpeg",
   "ending-poster.jpg": "image/jpeg",
+  "sample.mp4": "video/mp4",
+  "sample-poster.jpg": "image/jpeg",
 };
 
 // Serverless responses have a size cap, so video is sent in pieces the browser asks for in turn.

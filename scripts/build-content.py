@@ -21,7 +21,7 @@ def swap(text, old, new, count=1):
 
 page = page.replace('<meta name="claude:viewport-fit-sides" content="cover">\n', "")
 
-for name in ("welcome.mp4", "ending.mp4", "welcome-poster.jpg", "ending-poster.jpg"):
+for name in ("welcome.mp4", "ending.mp4", "welcome-poster.jpg", "ending-poster.jpg", "sample.mp4", "sample-poster.jpg"):
     page = swap(page, f'"videos/{name}"', f'"/media/{name}"')
 
 page = swap(page, "footer{border-top:1px solid var(--line)}",
