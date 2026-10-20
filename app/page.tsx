@@ -99,10 +99,10 @@ export default async function Home() {
                 Stop spending hours cutting pauses and typing captions. Set up an AI editor that does it for you,
                 from instructions in plain English. No coding experience required.
               </p>
-              <BuyButton href={buyUrl} />
-              <p className="sp-fine">
-                Not a PDF. A private, interactive members portal · One-time payment · Instant access
-              </p>
+              <a className="sp-more" href="#how">
+                See how it works <span aria-hidden="true">↓</span>
+              </a>
+              <p className="sp-fine">Not a PDF. A private, interactive members portal.</p>
             </div>
             <figure className="sp-phone">
               <video
@@ -130,7 +130,7 @@ export default async function Home() {
         </section>
 
         {/* Not a PDF */}
-        <section className="sp-sec sp-portal">
+        <section className="sp-sec sp-portal" id="how">
           <div className="sp-wrap">
             <div className="sp-notpdf">Not just another PDF</div>
             <h2 className="sp-h2">An interactive members portal you work through, step by step</h2>
