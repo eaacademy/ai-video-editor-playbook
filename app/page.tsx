@@ -132,7 +132,7 @@ export default async function Home() {
         {/* Not a PDF */}
         <section className="sp-sec sp-portal">
           <div className="sp-wrap">
-            <div className="eyebrow">Not just another PDF</div>
+            <div className="sp-notpdf">Not just another PDF</div>
             <h2 className="sp-h2">An interactive members portal you work through, step by step</h2>
             <p className="sp-sub">
               You don&apos;t download a file and get lost in it. You log in to your own private portal that walks you
