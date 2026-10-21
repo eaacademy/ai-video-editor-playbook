@@ -163,6 +163,52 @@ export default async function Home() {
           </div>
         </section>
 
+        {/* Peek inside */}
+        <section className="sp-sec sp-peek">
+          <div className="sp-wrap">
+            <div className="eyebrow">Take a peek inside</div>
+            <h2 className="sp-h2">This is what you&apos;ll be working in</h2>
+            <p className="sp-sub">Real screenshots from the members portal, on a computer and on a phone.</p>
+            <div className="sp-peek-main">
+              <figure className="sp-shot sp-shot-browser">
+                <div className="sp-bar" aria-hidden="true"><i /><i /><i /><span>aivideoeditorplaybook.eaacademy.online</span></div>
+                <div className="sp-fade">
+                  <img
+                    src="/preview/portal-chapter.webp"
+                    width={1600}
+                    height={778}
+                    alt="A chapter in the portal: the chapter menu and progress tracker on the left, a ready-made prompt with a Copy prompt button on the right"
+                    loading="lazy"
+                  />
+                </div>
+                <figcaption>Every chapter, with your progress on the side and prompts you copy in one click</figcaption>
+              </figure>
+              <figure className="sp-shot sp-shot-phone">
+                <img
+                  src="/preview/portal-phone.webp"
+                  width={600}
+                  height={1128}
+                  alt="The portal on a phone, showing the Meet your tools chapter"
+                  loading="lazy"
+                />
+                <figcaption>Works on your phone too</figcaption>
+              </figure>
+            </div>
+            <div className="sp-peek-row">
+              <figure className="sp-shot sp-shot-browser">
+                <div className="sp-bar" aria-hidden="true"><i /><i /><i /></div>
+                <img src="/preview/portal-home.webp" width={1200} height={583} alt="The portal's welcome screen" loading="lazy" />
+                <figcaption>Your starting point</figcaption>
+              </figure>
+              <figure className="sp-shot sp-shot-browser">
+                <div className="sp-bar" aria-hidden="true"><i /><i /><i /></div>
+                <img src="/preview/portal-prompts.webp" width={1200} height={583} alt="The prompt library: 15 prompts in a grid" loading="lazy" />
+                <figcaption>The prompt library, all 15 prompts in one place</figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
         {/* Before / after */}
         <section className="sp-sec">
           <div className="sp-wrap">
